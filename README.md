@@ -1,68 +1,48 @@
-# 🇪🇸 Sistema VERI*FACTU (AEAT)
+📘 1. Descripción general
 
-Implementación y documentación técnica para la integración del sistema **VERI*FACTU** según el **Real Decreto 1007/2023**, que regula los **Sistemas Informáticos de Facturación (SIF)** en España.
+VERI*FACTU es un sistema desarrollado por la Agencia Estatal de Administración Tributaria (AEAT) que permite a los contribuyentes generar facturas verificables y enviar automáticamente los registros de facturación a la AEAT.
 
----
+Su objetivo principal es garantizar la integridad, trazabilidad e inalterabilidad de los datos de facturación.
 
-## 📘 1. Descripción general
-
-VERI*FACTU es un sistema desarrollado por la **Agencia Estatal de Administración Tributaria (AEAT)** que permite a los contribuyentes generar facturas verificables y enviar automáticamente los registros de facturación a la AEAT.
-
-Su objetivo principal es garantizar la **integridad, trazabilidad e inalterabilidad** de los datos de facturación.
-
----
-
-## 🧩 2. Tipos de registros
+🧩 2. Tipos de registros
 
 El sistema gestiona tres tipos de registros:
 
-- **Registro de Alta de Factura**
-- **Registro de Anulación**
-- **Registro de Evento**
+Registro de Alta de Factura
 
-Cada registro genera una **huella criptográfica (hash)** que asegura la autenticidad y el encadenamiento entre facturas.
+Registro de Anulación
 
----
+Registro de Evento
 
-## ⚙️ 3. Especificaciones técnicas
+Cada registro genera una huella criptográfica (hash) que asegura la autenticidad y el encadenamiento entre facturas.
 
-| Elemento | Valor |
-|-----------|--------|
-| **Algoritmo de hash** | SHA-256 |
-| **Codificación** | UTF-8 |
-| **Salida** | Hexadecimal (64 caracteres, mayúsculas) |
-| **Formato de concatenación** | `campo1=valor1&campo2=valor2&...` |
-| **Campo de salida XML** | `<Huella>` o `<HuellaEvento>` |
-| **Encadenamiento** | Cada registro incluye la huella del anterior |
+⚙️ 3. Especificaciones técnicas
+Elemento	Valor
+Algoritmo de hash	SHA-256
+Codificación	UTF-8
+Salida	Hexadecimal (64 caracteres, mayúsculas)
+Formato de concatenación	campo1=valor1&campo2=valor2&...
+Campo de salida XML	<Huella> o <HuellaEvento>
+Encadenamiento	Cada registro incluye la huella del anterior
+🔐 4. Certificados digitales
 
----
+El envío de registros requiere autenticación mediante certificado digital:
 
-## 🔐 4. Certificados digitales
+Certificado del obligado tributario
 
-El envío de registros requiere **autenticación mediante certificado digital**:
+Certificado del desarrollador, si actúa como colaborador social (tipo 017) o tiene apoderamiento
 
-- Certificado del **obligado tributario**
-- Certificado del **desarrollador**, si actúa como **colaborador social (tipo 017)** o tiene **apoderamiento**
-
-📧 Contacto AEAT: `comunicacion.sepri@correo.aeat.es`  
+📧 Contacto AEAT: comunicacion.sepri@correo.aeat.es
 📘 Normativa: Orden HAC/1398/2003, Resolución 18/12/2024, Reglamento 1065/2007
 
----
+💾 5. Archivos técnicos (AEAT)
+Archivo	Descripción	Enlace
+WSDL VERI*FACTU	Servicio web principal para el envío de registros	SistemaFacturacion.wsdl
 
-## 💾 5. Archivos técnicos (AEAT)
-
-| Archivo | Descripción | Enlace |
-|----------|-------------|--------|
-| **WSDL VERI*FACTU** | Servicio web principal para el envío de registros | [SistemaFacturacion.wsdl](https://prewww2.aeat.es/static_files/common/internet/dep/aplicaciones/es/aeat/tikeV1.0/cont/ws/SistemaFacturacion.wsdl) |
-| **XSD SuministroLR** | Define estructura del registro de facturación | Incluido en el WSDL |
-| **XSD SuministroInformacion** | Define tipos de datos y validaciones | Incluido en el WSDL |
-| **Manual técnico AEAT** | Guía de integración y mensajes SOAP | [Información técnica AEAT](https://sede.agenciatributaria.gob.es/Sede/iva/sistemas-informaticos-facturacion-verifactu/informacion-tecnica.html) |
-
----
-
-## 🧮 6. Ejemplo de generación de huella (SHA-256)
-
-```python
+XSD SuministroLR	Define estructura del registro de facturación	Incluido en el WSDL
+XSD SuministroInformacion	Define tipos de datos y validaciones	Incluido en el WSDL
+Manual técnico AEAT	Guía de integración y mensajes SOAP	Información técnica AEAT
+🧮 6. Ejemplo de generación de huella (SHA-256)
 import hashlib
 
 def generar_huella(cadena):
@@ -70,78 +50,71 @@ def generar_huella(cadena):
 
 cadena = "IDEmisorFactura=89890001K&NumSerieFactura=12345678/G33&FechaExpedicionFactura=2025-11-06&Huella="
 print(generar_huella(cadena))
-# Verifactu
-Contenido Verifactu
 
 🌐 7. Entornos disponibles
 Entorno	Descripción	URL
-Pruebas (Sandbox)	Permite testear la integración sin utilizar certificados de empresa; útil para desarrollo y validación funcional.	https://prewww1.aeat.es/wlpl/TIKE-CONT/ws/SistemaFacturacion/VerifactuSOAP
-Pruebas (WSDL / XSD preprod)	WSDL y XSDs publicados en preproducción para descargar esquemas y generar clientes SOAP.	https://prewww2.aeat.es/static_files/common/internet/dep/aplicaciones/es/aeat/tikeV1.0/cont/ws/SistemaFacturacion.wsdl
-Producción	Entorno real para envíos oficiales. Requiere mTLS y certificado válido.	https://www1.aeat.es/wlpl/TIKE-CONT/ws/SistemaFacturacion/VerifactuSOAP
+Pruebas (Sandbox)	Permite testear la integración sin certificados reales.	Sandbox
 
-Notas prácticas
+Preproducción (WSDL/XSD)	WSDL y esquemas para generar clientes SOAP.	WSDL Preprod
 
-En sandbox puedes solicitar certificados de prueba a AEAT para titulares ficticios (contacto: catentidades@correo.aeat.es) y así emular envíos sin exponer certificados reales.
+Producción	Entorno oficial, requiere mTLS y certificado válido.	Producción
 
-La URL del WSDL/XSD te sirve para generar stubs/clients y validar localmente contra los esquemas oficiales.
+Notas prácticas:
 
-✅ 8. Validación y control (qué verifica AEAT y cómo manejarlo)
-Lo que la AEAT comprueba a la recepción
+En sandbox puedes solicitar certificados de prueba a AEAT (catentidades@correo.aeat.es).
 
-Formato XML / XSD: que el XML cumple los esquemas oficiales (XSD).
+El WSDL se usa para generar stubs/clients y validar los mensajes SOAP.
 
-Firma y mTLS: en producción, autenticación mediante certificado válido y correcto establecimiento de TLS mutuo.
+✅ 8. Validación y control (qué verifica AEAT)
 
-Huella encadenada: coherencia del campo <Huella> con el registro anterior.
+Comprobaciones principales:
 
-Campos obligatorios y reglas de negocio: tipos, formatos (fechas, decimales) y límites (máx. 1.000 registros por envío).
+Formato XML/XSD: validación estructural.
 
-Respuesta de estado: EstadoEnvio, CSV, IdPeticion, TiempoEsperaEnvio, y respuestas por línea con códigos de error.
+Firma y mTLS: autenticación TLS mutua.
 
-Estados y consecuencias
+Huella encadenada: coherencia entre registros.
 
-Correcto / Parcial / Incorrecto: estados globales de la remisión.
+Campos obligatorios: fechas, decimales, tipos.
 
-Si hay fallo en huella/estructura: la AEAT puede marcar la remisión como “Aceptada con errores” o rechazar líneas concretas.
+Límite: máx. 1000 registros por envío.
 
-TiempoEsperaEnvio: cuando la AEAT lo indica, debes esperar ese número de segundos antes de reintentar envíos para el presentador.
+Estados posibles:
 
-Recomendaciones de diseño para tu SIF / microservicio
+✅ Correcto
 
-Validar localmente antes de enviar (XSD, tipos de campo, normalización de valores).
+⚠️ Parcial
 
-Registrar todo: XML enviado, respuesta SOAP cruda, CSV, IdPeticion, tiempos y logs de usuario.
+❌ Incorrecto
 
-Implementar reintentos con backoff para errores temporales y respetar TiempoEsperaEnvio si se devuelve.
+Si la AEAT detecta una huella incorrecta → “Aceptada con errores”.
 
-Mapear códigos de error a acciones (corregir datos, alertar al usuario, reintentar, descartar).
+Recomendaciones de diseño:
 
-Auditoría: conservar registros y huellas hasta que prescriban obligaciones fiscales.
+Validar localmente antes de enviar.
 
-📂 9. Recursos adicionales (enlaces útiles)
+Registrar XML, respuestas SOAP, CSV e IDs.
 
-Información técnica VERI*FACTU (AEAT)
-https://sede.agenciatributaria.gob.es/Sede/iva/sistemas-informaticos-facturacion-verifactu/informacion-tecnica.html
+Implementar reintentos con TiempoEsperaEnvio.
 
-Guía de integración / manual (PDF)
-https://sede.agenciatributaria.gob.es/static_files/AEAT_Desarrolladores/EEDD/IVA/VERI-FACTU/Veri-Factu_Descripcion_SWeb.pdf
+Mapear códigos de error a acciones concretas.
 
-WSDL (preproducción)
-https://prewww2.aeat.es/static_files/common/internet/dep/aplicaciones/es/aeat/tikeV1.0/cont/ws/SistemaFacturacion.wsdl
+Guardar logs y huellas según los plazos fiscales.
 
-Endpoint sandbox (pruebas)
-https://prewww1.aeat.es/wlpl/TIKE-CONT/ws/SistemaFacturacion/VerifactuSOAP
+📂 9. Recursos adicionales
+Recurso	Enlace
+Información técnica VERI*FACTU (AEAT)	AEAT - Información técnica
 
-FAQ VERI*FACTU (preguntas frecuentes)
-https://sede.agenciatributaria.gob.es/Sede/iva/sistemas-informaticos-facturacion-verifactu/preguntas-frecuentes/sistemas-verifactu.html
+Guía de integración (PDF)	Manual Veri*Factu
 
-Contacto AEAT (colaboración social / apoderamientos)
-comunicacion.sepri@correo.aeat.es
+WSDL Preproducción	SistemaFacturacion.wsdl
 
-(para consultas sobre convenio tipo 017 y modelos de representación)
+Endpoint Sandbox	VerifactuSOAP (Sandbox)
 
-🧰 10. Estructura del proyecto y pasos rápidos para GitHub
-Estructura recomendada
+FAQ VERI*FACTU	Preguntas frecuentes AEAT
+
+Contacto AEAT	comunicacion.sepri@correo.aeat.es
+🧰 10. Estructura del proyecto (recomendada para GitHub)
 verifactu-integration/
 │
 ├── README.md
