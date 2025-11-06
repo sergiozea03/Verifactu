@@ -58,11 +58,9 @@ El envío de registros requiere **autenticación mediante certificado digital**:
 | 🧱 **XSD SuministroInformacion** | Define tipos de datos y validaciones | Incluido en el WSDL |
 | 📘 **Manual técnico AEAT** | Guía de integración y mensajes SOAP | [Información técnica AEAT](https://sede.agenciatributaria.gob.es/Sede/iva/sistemas-informaticos-facturacion-verifactu/informacion-tecnica.html) |
 
----
+--- 
 
-## 🧮 6. Ejemplo de generación de huella (SHA-256)
-
-```python
+## 🌐 6. Generar huella
 import hashlib
 
 def generar_huella(cadena):
