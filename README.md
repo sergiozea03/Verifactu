@@ -131,7 +131,7 @@ Enlaces útiles y documentación oficial proporcionada por la **AEAT** para el d
 | 🧩 **WSDL Preproducción** | [SistemaFacturacion.wsdl](https://prewww2.aeat.es/static_files/common/internet/dep/aplicaciones/es/aeat/tikeV1.0/cont/ws/SistemaFacturacion.wsdl) |
 | 🧪 **Endpoint Sandbox** | [VerifactuSOAP (Sandbox)](https://prewww1.aeat.es/wlpl/TIKE-CONT/ws/SistemaFacturacion/VerifactuSOAP) |
 | ❓ **FAQ VERI*FACTU** | [Preguntas frecuentes AEAT](https://sede.agenciatributaria.gob.es/Sede/iva/sistemas-informaticos-facturacion-verifactu/preguntas-frecuentes/sistemas-verifactu.html) |
-| ✉️ **Contacto AEAT** | `comunicacion.sepri@correo.aeat.es` |
+| ✉️ **Contacto AEAT** | `verifactu@correo.aeat.es` |
 
 ---
 
